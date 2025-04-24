@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  # Servicio de base de datos MySQL
+  db:
+    image: mysql:8.0
+    container_name: cyberbook-mysql
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_DATABASE: VirtualLibrary
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - cyberbook-network
+
+  # Servicio Backend .NET
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: cyberbook-backend
+    depends_on:
+      - db
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ConnectionStrings__Dev=server=db;database=VirtualLibrary;user=root;password=1234
+      - Jwt__Secret=virtual-library-json-web-token-secret-key
+      - Jwt__MinutesAlive=60
+    ports:
+      - "5251:80"
+    volumes:
+      - backend-data:/app/wwwroot
+    networks:
+      - cyberbook-network
+
+  # Servicio Frontend React
+  frontend:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    container_name: cyberbook-frontend
+    depends_on:
+      - backend
+    ports:
+      - "3000:80"
+    environment:
+      - REACT_APP_API_URL=http://localhost:5251/api
+    networks:
+      - cyberbook-network
+
+networks:
+  cyberbook-network:
+    driver: bridge
+
+volumes:
+  mysql-data:
+  backend-data:

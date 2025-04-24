@@ -1,9 +1,9 @@
 import {
-  Avatar,
+ 
   Box,
   Button,
   Flex,
-  HStack,
+
   IconButton,
   VStack,
 } from "@chakra-ui/react";
