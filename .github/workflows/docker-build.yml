@@ -29,11 +29,11 @@ jobs:
       with:
         context: ./client
         push: ${{ github.event_name != 'pull_request' }}
-        tags: yourusername/virtual-library-frontend:latest
+        tags: chamaquitoazul/cyberbook-frontend:latest
     
     - name: Build and push backend
       uses: docker/build-push-action@v4
       with:
         context: ./server
         push: ${{ github.event_name != 'pull_request' }}
-        tags: yourusername/virtual-library-backend:latest
+        tags: chamaquitoazul/cyberbook-backend:latest
