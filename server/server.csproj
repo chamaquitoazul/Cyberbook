@@ -12,6 +12,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="BCrypt.Net-Next" Version="4.0.3"/>
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.3"/>
+     <PackageReference Include="Sentry.AspNetCore" Version="3.41.3" />
   </ItemGroup>
 
 </Project>

@@ -4,6 +4,14 @@ using server;
 
 var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
+builder.WebHost.UseSentry(options =>
+{
+    options.Dsn = builder.Configuration["Sentry:Dsn"];
+    options.Debug = builder.Environment.IsDevelopment();
+    options.TracesSampleRate = 1.0; // Captura todos los traces en desarrollo, ajusta para producción
+    options.MinimumBreadcrumbLevel = LogLevel.Debug;
+    options.MinimumEventLevel = LogLevel.Warning;
+});
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -51,6 +59,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 app.UseAuthorization();
+app.UseSentryTracing();
 app.UseStaticFiles();
 app.MapControllers();
 app.UseCors("cors");
